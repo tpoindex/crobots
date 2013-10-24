@@ -58,7 +58,7 @@ This should start up CROBOTS with the four demo robots programs.  Programs are
 listed to the screen as they compile.  Once all four are compiled, the match 
 begins.  
 
-Documentation for CROBOTS is in src/crobots.doc.
+Documentation for CROBOTS is in [docs/crobots_manual.html](http://htmlpreview.github.io/?https://github.com/tpoindex/crobots/blob/master/docs/crobots_manual.html)
 
 History
 -------
