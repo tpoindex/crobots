@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <META http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <META content="The complete manual for CROBOTS" name="description">
+    <TITLE>CROBOTS Documentation</TITLE>
+    <STYLE type="text/css">
+      BODY {
+        margin: 1em;
+      }
+      H2 {
+        margin-top: 1em;
+        padding-top: 1em;
+        border-top: 1px solid #ccc;
+      }
+      TABLE {
+        margin-left: 50px;
+      }
+      TD {
+        padding-left: 0;
+        padding-right: 1em;
+        vertical-align: top;
+      }
+      CAPTION {
+        margin-left: -25px;
+        text-align: left;
+      }
+      PRE {
+        margin-left: 50px;
+      }
+      CODE {
+        white-space: nowrap;
+      }
+    </STYLE>
+  </HEAD>
+  <BODY>
+<PRE><B>
+ #####  ######   #####  ######   #####  #######  #####
+#     # #     # #     # #     # #     #    #    #     #
+#       #     # #     # #     # #     #    #    #
+#       ######  #     # ######  #     #    #     #####
+#       #   #   #     # #     # #     #    #          #
+#     # #    #  #     # #     # #     #    #    #     #
+ #####  #     #  #####  ######   #####     #     #####
+</B></PRE>
+<P>(C) Copyright 1985, All rights reserved.</P>
+<P>CROBOTS is copyrighted by:</P>
+<ADDRESS>Tom Poindexter<BR> </ADDRESS>
+
+<H3>Table of Contents</H3>
+<OL>
+  <LI><A href="#1">License agreement and disclaimer of warranty</A>
+  <LI><A href="#2">Introduction</A>
+  <UL>
+    <LI><A href="#2-1">Description</A>
+    <LI><A href="#2-2">Intended audience</A>
+    <LI><A href="#2-3">Machine requirements</A>
+    <LI><A href="#2-4">User interface</A>
+  </UL>
+  <LI><A href="#3">Types of play</A>
+  <UL>
+    <LI>Single Play
+    <LI>Match Play
+  </UL>
+  <LI><A href="#4">Running CROBOTS</A>
+  <UL>
+    <LI><A href="#4-1">Command line options</A>
+    <LI><A href="#4-2">Examples</A>
+  </UL>
+  <LI><A href="#5">Game Parameters</A>
+  <UL>
+    <LI><A href="#5-1">Battlefield</A>
+    <LI><A href="#5-2">Robot offense</A>
+    <LI><A href="#5-3">Robot defense</A>
+    <LI><A href="#5-4">Disabling robots</A>
+    <LI><A href="#5-5">Sample display</A>
+  </UL>
+  <LI><A href="#6">CROBOTS CPU</A>
+  <LI><A href="#7">CROBOTS C Compiler</A>
+  <UL>
+    <LI><A href="#7-1">Description</A>
+    <LI><A href="#7-2">Features missing from standard C</A>
+    <LI><A href="#7-3">CROBOTS language</A>
+    <LI><A href="#7-4">Compiler limits</A>
+    <LI><A href="#7-5">Error and warning messages</A>
+  </UL>
+  <LI><A href="#8">CROBOTS C Intrinsic Function Library</A>
+  <UL>
+    <LI><A href="#8-1">scan()</A>
+    <LI><A href="#8-2">cannon()</A>
+    <LI><A href="#8-3">drive()</A>
+    <LI><A href="#8-4">damage()</A>
+    <LI><A href="#8-5">speed()</A>
+    <LI><A href="#8-6">loc_x(), loc_y()</A>
+    <LI><A href="#8-7">rand()</A>
+    <LI><A href="#8-8">sqrt()</A>
+    <LI><A href="#8-9">sin(), cos(), tan(), atan()</A>
+  </UL>
+  <LI><A href="#9">CROBOTS C Program Structure</A>
+  <UL>
+    <LI><A href="#9-1">Structure</A>
+    <LI><A href="#9-2">Sample robots</A>
+  </UL>
+  <LI><A href="#10">CROBOTS CPU Architecture</A>
+  <UL>
+    <LI><A href="#10-1">Stack</A>
+    <LI><A href="#10-2">Link list</A>
+    <LI><A href="#10-3">Instruction set</A>
+    <LI><A href="#10-4">Machine level debugging</A>
+  </UL>
+  <LI><A href="#11">Implementation Notes</A>
+  <LI><A href="#12">Order Form</A>
+</OL>
+
+
+<H2><A name="1">1.</A> License agreement:</H2>
+<P> CROBOTS is Copyright 1985 Tom Poindexter.</P>
+
+<P>CROBOTS is distributed under terms of the GNU General Public
+License, version 2. </P>
+
+
+<H3>DISCLAIMER OF WARRANTY</H3>
+<P>THIS SOFTWARE AND MANUAL ARE PROVIDED "AS IS" WITHOUT WARRANTY OF AND KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS OF PURPOSE. THE USER OF THIS SOFTWARE
+AND MANUAL ASSUME ALL RISKS.</P>
+
+
+<H2><A name="2">2.</A> Introduction</H2>
+
+<H3><A name="2-1">2-1.</A> Description</H3>
+<P>CROBOTS ("see-robots") is a game based on computer programming. Unlike arcade
+type games which require human inputs controlling some object, all strategy in
+CROBOTS must be complete before the actual game begins. Game strategy is
+condensed into a C language program that you design and write. Your program
+controls a robot whose mission is to seek out, track, and destroy other robots,
+each running different programs. Each robot is equally equipped, and up to four
+robots may compete at once. CROBOTS is best played among several people, each
+refining their own robot program, then matching program against program.</P>
+<P>CROBOTS consists of a C compiler, a virtual computer, and battlefield display
+(text graphics only, monochrome or color). The CROBOTS compiler accepts a
+limited (but useful) subset of the C language. The C robot programs are aided by
+hardware functions to scan for opponents, start and stop drive mechanisms, fire
+cannons, etc. After the programs are compiled and loaded into separate robots,
+the battle is observed. Robots moving, missiles flying and exploding, and
+certain status information are displayed on the screen, in real-time.</P>
+
+<H3><A name="2-2">2-2.</A> Intended audience</H3>
+<P>CROBOTS will most likely appeal to programmers (especially those who think
+they can write the "best" programs), computer game enthusiasts, people wishing
+to learn the C language, and those who are interested in compiler design and
+virtual computer interpreters.</P>
+
+<H3><A name="2-3">2-3.</A> Machine and software requirements</H3>
+<UL>
+  <LI>IBM-PC, or other close MS-DOS computers that use INT 10H video calls
+  <LI>192k ram
+  <LI>DOS 2.0 or higher
+  <LI>One disk drive
+  <LI>Monochrome or Color/Graphics display
+  <LI>Text editor (PC-DOS Edlin, or your own favorite)
+</UL>
+
+<H3><A name="2-4">2-4.</A> User interface</H3>
+<P>CROBOTS does not use menus, windows, pop-ups, or any other user-friendly
+interface. Since the emphasis is on designing and writing robot control
+programs, CROBOTS is started as a compiler might be started, from the DOS
+command line.</P>
+
+
+<H2><A name="3">3.</A> Types of play</H2>
+<P>CROBOTS can either run one match (single play), in which the full screen,
+realtime battlefield display is used, or several matches (match play), in which
+only the name of the winner is printed after each match. Single play is the
+default. Match play is intended to see how robot programs perform on the
+average. Match play can consume several hours of computer time depending on the
+number of matches and cpu cycle limit, and can be run overnight.</P>
+
+
+<H2><A name="4">4.</A> Running CROBOTS</H2>
+
+<H3><A name="4-1">4-1.</A> Command line options</H3>
+<P>CROBOTS is started from the DOS prompt:<BR></P>
+<PRE>A&gt;crobots [options] robot-program-1 [robot-program-n] [&gt;file]</PRE>
+
+<P>Valid options and parameters are:</P>
+<TABLE><TR>
+  <TD><code>-c</code> (optional)</TD>
+  <TD>Compile only, and produce virtual machine assembler code and symbol
+  tables.</TD>
+</TR><TR>
+  <TD><code>-d</code> (optional)</TD>
+  <TD>Compile one program, and invoke machine level single step tracing.</TD>
+</TR><TR>
+  <TD><code>-mxxx</code> (optional)</TD>
+  <TD>Run a series of matches, were <code>xxx</code> is the number of matches.
+  There should be no spaces between <code>-m</code> and the number. If
+  <code>-m</code> is not specified, then the default is to run one match and
+  display the realtime battlefield.</TD>
+</TR><TR>
+  <TD><code>-lxxx</code> (optional)</TD>
+  <TD>Limit the number of machine cpu cycles per match when <code>-m</code> is
+  specified. There should be no spaces between <code>-l</code> and the number.
+  The default cycle limit is 500,000 when <code>-m</code> is specified</TD>
+</TR><TR>
+  <TD><code>robot-programs</code> (required)</TD>
+  <TD>The file name of the CROBOTS source program(s). Up to four files may be
+  specified. If only one file is specified, it will be "cloned" into another, so
+  that two robots (running the same program) will compete. Any file name may be
+  used, but for consistency use '<code>.r</code>' as an extension.</TD>
+</TR><TR>
+  <TD><code>&gt;file</code> (optional)</TD>
+  <TD>Use DOS 2.0+ redirection to get a compile listing (<code>-c</code> option)
+  or to record matches (<code>-m</code> option).</TD>
+</TR></TABLE>
+
+<H3><A name="4-2">4-2.</A> Examples:</H3>
+<OL>
+  <LI>Watch three robots compete with full display:<BR>
+  <CODE>A&gt;crobots robot1.r robot2.r robot3.r</CODE>
+  <LI>Compile one robot, and save the listing:<BR>
+  <CODE>A&gt;crobots -c robot1.r &gt;robot1.lst</CODE>
+  <LI>Debug a robot (first get an assembler code listing, as in example 2:<BR>
+  <CODE>A&gt;crobots -d robot1.r</CODE>
+  <LI>Run 50 matches, limiting total cpu cycles to 200,000, and save
+  results:<BR>
+  <CODE>A&gt;crobots -m50 -l200000 robot1.r robot2.r &gt;save</CODE>
+</OL>
+
+
+<H2><A name="5">5.</A> Game parameters</H2>
+
+<H3><A name="5-1">5-1.</A> Battlefield</H3>
+<P>The battlefield is a 1,000 by 1,000 meter square. A wall surrounds the
+perimeter, so that a robot running into the wall will incur damage.</P>
+<P>The lower left corner has the coordinates x = 0, y = 0; the upper right
+corner has the coordinated x = 999, y = 999.</P>
+<P>The compass system is oriented so that due east (right) is 0 degrees, 90 is
+north, 180 is west, 270 is south. One degree below due east is 359.</P>
+<P><IMG src="compass.png" height="145" width="150" style="padding-left: 50px"
+alt="[Compass system]"></P>
+
+<H3><A name="5-2">5-2.</A> Robot offense</H3>
+<P>The main offensive weapons are the cannon and scanner. The cannon has a range
+of 700 meters. There are an unlimited number of missiles that can be fired, but
+a reloading factor limits the number of missiles in the air at any one time to
+two. The cannon is mounted on an independent turret, and therefore can fire any
+direction, 0-359, regardless of robot heading.</P>
+<P>The scanner is an optical device that can instantly scan any chosen heading,
+0-359. The scanner has a maximum resolution of &plusmn;10 degrees. This enables
+the robot to quickly scan the field at a low resolution, then use maximum
+resolution to pinpoint an opponent.</P>
+
+<H3><A name="5-3">5-3.</A> Robot defense</H3>
+<P>The only defense available are the motor drive and status registers. The
+motor can be engaged on any heading, 0-359, in speeds from 0-100 percent of
+power. There are acceleration and deceleration factors. A speed of 0 stops the
+motor. Turns can be negotiated at speeds of 50% and less, in any direction. Of
+course, the motor drive can be engaged any time, and is necessary on offense
+when a target is beyond the 700 meter range of the cannon.</P>
+<P>Certain status registers provide feedback to the robot. The primary registers
+indicate the percent of damage, and current x and y locations on the
+battlefield. Another register provides current drive speed.</P>
+
+<H3><A name="5-4">5-4.</A> Disabling opponents</H3>
+<P>A robot is considered dead when the damage reaches 100%. Percent of damage is
+inflicted as follows:</P>
+<TABLE><TR>
+  <TD>2%</TD>
+  <TD>collision into another robot (both robots in a collision receive damage)
+or into a wall. A collision also causes the motor drive to disengage, and speed
+is reduced to 0.</TD>
+</TR><TR>
+  <TD>3%</TD>
+  <TD>a missile exploding within a 40 meter radius.
+</TR><TR>
+  <TD>5%</TD>
+  <TD>a missile exploding within a 20 meter radius.
+</TR><TR>
+  <TD>10%</TD>
+  <TD>a missile exploding within a 5 meter radius.
+</TR></TABLE>
+<P>Damage is cumulative, and cannot be repaired. However, a robot does not loose
+any mobility, fire potential, etc. at high damage levels. In other words, a
+robot at 99% damage performs equally as a robot with no damage.</P>
+
+<H3><A name="5-5">5-5.</A> Sample display</H3>
+<P><IMG src="display.png" height="322" width="497" style="padding-left: 50px"
+alt="[Battlefield display]"></P>
+
+<P>Each status block shows the file name of the robot, the damage incurred, the
+current scan degrees, and the speed and heading. Robots are represented on the
+field by '1', '2', etc., according to the status block position. The number of
+elapsed robot cpu cycles is shown at the bottom of the status blocks.</P>
+<P>The CROBOTS program can be stopped at any time, by using Ctrl-Break.</P>
+
+
+<H2><A name="6">6.</A> CROBOTS CPU</H2>
+<P>The robot cpu is a simple stack-oriented computer. It operates at very slow
+speeds (on a 4.77MHz 8088 PC with two robots running, the average speed is 270
+instructions per second, .00027 mips!!). The word size is 32 bits, allowing
+integer values from -2,147,483,648 to 2,147,483,647. There are internal pointer
+registers that manage stack usage, but are not accessible from a robot program.
+The same is true for an implicit accumulator.</P>
+<P>The maximum code space is 1,000 instructions. All instructions are equal in
+length. The maximum stack size is 500 words, which is used for data and function
+call/returns. The stack grows upward for data usage, and downward (from the end)
+for function call/returns. Three words are used for each function call, and are
+release upon the function return. The data portion and call/return portion are
+managed by separate internal stack pointers.</P>
+<P>If the data stack pointer and call/return stack pointer collide, a stack
+overflow occurs. In this case, the robot is restarted at the 'main' function,
+with the stack reset to all zeroes.</P>
+<P>For more information, see the section on <A href="#10">machine
+instructions and theory</A>.</P>
+
+
+<H2><A name="7">7.</A> CROBOTS C compiler</H2>
+
+<H3><A name="7-1">7-1.</A> Description</H3>
+<P>The CROBOTS compiler accepts a limited subset of the C language. There is no
+provision for separate compilation, i.e., all modules of a program must be in
+one file. No preprocessor is provided for "#define", "#include", etc.
+Identifiers are significant to 7 characters, although any length may be used.
+The compiled machine code is loaded into the robot cpu, and cannot be saved.</P>
+
+<H3><A name="7-2">7-2.</A> Features missing from standard C</H3>
+<P>Major language features missing from K&amp;R are: floating point variables,
+structures, unions, pointers, initializers, arrays, character data, typedefs,
+for statement, do..while statement, switch..case statement, break, continue,
+gotos and labels, ternary and comma operators, octal and hexadecimal constants,
+no parameters to main(), and all preprocessor directives. My apologies to "The C
+Programming Language" by Brian W. Kernighan and Dennis M. Ritchie,
+Prenctice-Hall, 1978.</P>
+
+<H3><A name="7-3">7-3.</A> CROBOTS language</H3>
+<P>The language features that are present are entirely suitable for writing
+robot control programs. Basic programming constructs of if..then..else, while,
+and function calls can be used freely. Full expression evaluation is also
+provided, so that statements such as:</P>
+<PRE>if ((x = func1(y,1,++z,func2(c))) &gt; 0)
+  a = 0;
+else
+  a = x;</PRE>
+<P>are perfectly legal. Ifs and whiles may be nested, and recursion is
+supported. Variables declared outside a function definition are global in scope,
+whereas variables declared inside a function definition are local to that
+function.</P>
+<P>The following keywords are recognized:</P>
+<TABLE>
+  <caption>comments:</caption>
+  <TR>
+    <TD><code>/* ... */</code></TD><TD>comments cannot be nested</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>constants:</caption>
+  <TR>
+    <TD>any decimal digits, optionally preceded with a "<code>-</code>"</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>declarations:</caption>
+  <TR>
+    <TD><code>int</code></TD><TD>variable declare</TD>
+  </TR>
+  <TR>
+    <TD><code>long</code></TD><TD>same as int</TD>
+  </TR>
+  <TR>
+    <TD><code>auto</code></TD><TD>default storage scope, optional</TD>
+  </TR>
+  <TR>
+    <TD><code>register</code></TD><TD>legal, but ignored, same as auto</TD>
+  </TR>
+  <TR>
+    <TD><code>function (parms,.....)</code></TD><TD>function definition</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>logic control:</caption>
+  <TR>
+    <TD><code>if (expr) STMT else STMT</code></TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>iteration:</caption>
+  <TR>
+    <TD><code>while (expr) STMT</code></TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>function return:</caption>
+  <TR>
+    <TD><code>return</code></TD><TD>return</TD>
+  </TR>
+  <TR>
+    <TD><code>return expr</code></TD><TD>return a with value</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>assignment operators:</caption>
+  <TR>
+    <TD><code>=</code></TD><TD>assignment</TD>
+  </TR>
+  <TR>
+    <TD><code>&gt;&gt;=</code></TD><TD>assignment shift right</TD>
+  </TR>
+  <TR>
+    <TD><code>&lt;&lt;=</code></TD><TD>assignment shift left</TD>
+  </TR>
+  <TR>
+    <TD><code>+=</code></TD><TD>assignment addition</TD>
+  </TR>
+  <TR>
+    <TD><code>-=</code></TD><TD>assignment subtraction</TD>
+  </TR>
+  <TR>
+    <TD><code>*=</code></TD><TD>assignment multiplication</TD>
+  </TR>
+  <TR>
+    <TD><code>/=</code></TD><TD>assignment division</TD>
+  </TR>
+  <TR>
+    <TD><code>%=</code></TD><TD>assignment modulo</TD>
+  </TR>
+  <TR>
+    <TD><code>&amp;=</code></TD><TD>assignment and</TD>
+  </TR>
+  <TR>
+    <TD><code>^=</code></TD><TD>assignment exclusive or</TD>
+  </TR>
+  <TR>
+    <TD><code>|=</code></TD><TD>assignment inclusive or</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>bit-wise operators:</caption>
+  <TR>
+    <TD><code>&gt;&gt;&nbsp;</code></TD><TD>shift right</TD>
+  </TR>
+  <TR>
+    <TD><code>&lt;&lt;</code></TD><TD>shift left</TD>
+  </TR>
+  <TR>
+    <TD><code>&amp;</code></TD><TD>and</TD>
+  </TR>
+  <TR>
+    <TD><code>!</code></TD><TD>unary not</TD>
+  </TR>
+  <TR>
+    <TD><code>~</code></TD><TD>unary one's complement</TD>
+  </TR>
+  <TR>
+    <TD><code>^</code></TD><TD>exclusive or</TD>
+  </TR>
+  <TR>
+    <TD><code>|</code></TD><TD>inclusive or</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>increment/decrement operators:</caption>
+  <TR>
+    <TD><code>++&nbsp;</code></TD><TD>prefix increment, see derivations</TD>
+  </TR>
+  <TR>
+    <TD><code>--</code></TD><TD>prefix decrement, see derivations</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>logical operators:</caption>
+  <TR>
+    <TD><code>&amp;&amp;&nbsp;</code></TD><TD>logical and</TD>
+  </TR>
+  <TR>
+    <TD><code>||</code></TD><TD>logical or</TD>
+  </TR>
+  <TR>
+    <TD><code>&lt;=</code></TD><TD>logical less than or equal</TD>
+  </TR>
+  <TR>
+    <TD><code>&gt;=</code></TD><TD>logical greater than or equal</TD>
+  </TR>
+  <TR>
+    <TD><code>==</code></TD><TD>logical equal</TD>
+  </TR>
+  <TR>
+    <TD><code>!=</code></TD><TD>logical not equal</TD>
+  </TR>
+  <TR>
+    <TD><code>&lt;</code></TD><TD>logical less than</TD>
+  </TR>
+  <TR>
+    <TD><code>&gt;</code></TD><TD>logical greater than</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>arithmetic operators:</caption>
+  <TR>
+    <TD><code>- &nbsp;</code></TD><TD>subtraction or unary negation</TD>
+  </TR>
+  <TR>
+    <TD><code>+</code></TD><TD>addition</TD>
+  </TR>
+  <TR>
+    <TD><code>*</code></TD><TD>multiplication</TD>
+  </TR>
+  <TR>
+    <TD><code>/</code></TD><TD>division</TD>
+  </TR>
+  <TR>
+    <TD><code>%</code></TD><TD>modulo</TD>
+  </TR>
+</TABLE>
+<TABLE>
+  <caption>misc:</caption>
+  <TR>
+    <TD><code>;</code></TD><TD>statement terminator or null statement</TD>
+  </TR>
+  <TR>
+    <TD><code>{ }</code></TD><TD>compound statement</TD>
+  </TR>
+  <TR>
+    <TD><code>,</code></TD><TD>parameter separator in function definition or
+    call</TD>
+  </TR>
+  <TR>
+    <TD><code>( )</code></TD><TD>expression or function definition or call</TD>
+  </TR>
+</TABLE>
+<P>Precedence and order of evaluation are the same as in K&amp;R.</P>
+<TABLE>
+  <THEAD>
+    <TR>
+      <TD>Operator</TD>
+      <TD>Associativity</TD>
+    </TR>
+  </THEAD>
+  <TBODY>
+    <TR>
+      <TD><code>()</code></TD>
+      <TD>left to right</TD>
+    </TR>
+    <TR>
+      <TD><code>! ~ ++ -- -</code></TD>
+      <TD>right to left</TD>
+    </TR>
+    <TR>
+      <TD><code>* / %</code></TD>
+      <TD>left to right</TD>
+    </TR>
+    <TR>
+      <TD><code>+ -</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>&lt;&lt; &gt;&gt;</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>&lt; &lt;= =&gt; &gt;</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>== !=</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>&amp;</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>^</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>|</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>&amp;&amp;</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>||</code></TD>
+      <TD>" &nbsp; " &nbsp; "</TD>
+    </TR>
+    <TR>
+      <TD><code>= -= +=</code> etc.</TD>
+      <TD>right to left</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<P>Major deviations from K&amp;R:</P>
+<UL>
+  <LI>Local variables need not be declared before reference, i.e., any
+  undeclared variable will default to a local variable.
+  <LI>Postfix increment and decrement (<code>var++</code> or <code>var--</code>)
+  are recognized, but the result is the same as prefix increment/decrement
+  (<code>++var</code>).
+  <LI>Intrinsic function names are reserved.
+</UL>
+
+<H3><A name="7-4">7-4.</A> Compiler limits</H3>
+<UL>
+  <LI>defined functions: 64
+  <LI>local variables per function: 64
+  <LI>external variables: 64
+  <LI>if nest level: 16
+  <LI>while nest level: 16
+</UL>
+
+<H3><A name="7-5">7-5.</A> Compiler error and warning messages:</H3>
+<P>The compiler has no error recovery and will stop on the first error found.
+Sorry. Warning messages do not stop the compiler.</P>
+<P><B>Error messages</B></P>
+<P><I>"syntax error"</I> - Any input that results in improper C syntax will
+yield "syntax error", with an indicator pointing to the unrecognizable input.
+</P>
+<P><I>"instruction space exceeded"</I> - compiler tried to generate more than
+1000 machine instructions.</P>
+<P><I>"symbol pool exceeded"</I> - the maximum local variable, external
+variable, or function definition symbol table was exceeded.</P>
+<P><I>"function referenced but not found"</I> - a function was referenced that
+was not defined in the input file or is not an intrinsic function.</P>
+<P><I>"main not defined"</I> - the input file did not define a 'main()'
+function.</P>
+<P><I>"function definition same as intrinsic"</I> - a function was defined with
+the same name as an intrinsic function, which are reserved.</P>
+<P><I>"if nest level exceeded"</I> - more than 16 'if's were nested.</P>
+<P><I>"while nest level exceeded"</I> - more than 16 'while's were nested.</P>
+<P><I>"yacc stack overflow"</I> - the compiler's parser overflowed, probably due
+to complex expressions and/or extreme nesting.</P>
+<P><B>Warning messages</B></P>
+<P>These messages will not cause the compiler to fail, but may cause the program
+to executed unexpectedly.</P>
+<P><I>"unsupported initializer"</I> - variable declares cannot include an
+initializer. For future releases.</P>
+<P><I>"unsupported break"</I> - the 'break' statement was found and ignored. For
+future releases</P>
+<P><I>"n postfix operators"</I> - postfix increment or decrement operators were
+used, and are coerced into prefix expressions.</P>
+<P><I>"n undeclared variables"</I> - one or more variables were implicitly
+declared.</P>
+<P><I>"code utilization: n%"</I> - reports the capacity of machine instructions
+generated.</P>
+
+
+<H2><A name="8">8.</A> CROBOTS C Intrinsic Function Library</H2>
+<P>The intrinsic function library provides machine level control and certain
+arithmetic functions. These functions do not consume any of the program code
+space or data stack, except for the three words for call/return sequences. No
+explicit linking is required to use any intrinsic function.</P>
+
+<H3><A name="8-1">scan</A> (degree,resolution)</H3>
+<P>The scan() function invokes the robot's scanner, at a specified degree and
+resolution. scan() returns 0 if no robots are within the scan range or a
+positive integer representing the range to the closest robot. Degree should be
+within the range 0-359, otherwise degree is forced into 0-359 by a modulo 360
+operation, and made positive if necessary. Resolution controls the scanner's
+sensing resolution, up to +/- 10 degrees.</P>
+<PRE>Examples:
+   range = scan(45,0); /* scan 45, with no variance */
+   range = scan(365,10); /* scans the range from 355 to 15 */</PRE>
+
+<H3><A name="8-2">cannon</A> (degree,range)</H3>
+<P>The cannon() function fires a missile heading a specified range and
+direction. cannon() returns 1 (true) if a missile was fired, or 0 (false) if the
+cannon is reloading. Degree is forced into the range 0-359 as in scan(). Range
+can be 0-700, with greater ranges truncated to 700.</P>
+<PRE>Examples:
+   degree = 45;    /* set a direction to test */
+   if ((range=scan(degree,2)) &gt; 0) /* see if a target is there */
+     cannon(degree,range);  /* fire a missile */</PRE>
+
+<H3><A name="8-3">drive</A> (degree,speed)</H3>
+<P>The drive() function activates the robot's drive mechanism, on a specified
+heading and speed. Degree is forced into the range 0-359 as in scan(). Speed is
+expressed as a percent, with 100 as maximum. A speed of 0 disengages the drive.
+Changes in direction can be negotiated at speeds of less than 50 percent.</P>
+<PRE>Examples:
+   drive(0,100);  /* head due east, at maximum speed */
+   drive(90,0);   /* stop motion */</PRE>
+
+<H3><A name="8-4">damage</A> ()</H3>
+<P>The damage() function returns the current amount of damage incurred. damage()
+takes no arguments, and returns the percent of damage, 0-99. (100 percent damage
+means the robot is completely disabled, thus no longer running!)</P>
+<PRE>Examples:
+   d = damage();       /* save current state */
+   ; ; ;               /* other instructions */
+   if (d != damage())  /* compare current state to prior state */
+   {
+     drive(90,100);    /* robot has been hit, start moving */
+     d = damage();     /* get current damage again */
+   }</PRE>
+
+<H3><A name="8-5">speed</A> ()</H3>
+<P>The speed() function returns the current speed of the robot. speed() takes no
+arguments, and returns the percent of speed, 0-100. Note that speed() may not
+always be the same as the last drive(), because of acceleration and
+deceleration.</P>
+<PRE>Examples:
+   drive(270,100);   /* start drive, due south */
+   ; ; ;             /* other instructions */
+   if (speed() == 0) /* check current speed */
+   {
+     drive(90,20);   /* ran into the south wall, or another robot */
+   }</PRE>
+
+<H3><A name="8-6">loc_x</A> ()<BR>loc_y ()</H3>
+<P>The loc_x() function returns the robot's current x axis location. loc_x()
+takes no arguments, and returns 0-999. The loc_y() function is similar to
+loc_x(), but returns the current y axis position.</P>
+<PRE>Examples:
+   drive (180,50);  /* start heading for west wall */
+   while (loc_x() &gt; 20)
+     ;              /* do nothing until we are close */
+   drive (180,0);   /* stop drive */</PRE>
+
+<H3><A name="8-7">rand</A> (limit)</H3>
+<P>The rand() function returns a random number between 0 and limit, up to 32767.
+</P>
+<PRE>Examples:
+   degree = rand(360);     /* pick a random starting point */
+   range = scan(degree,0); /* and scan */</PRE>
+
+<H3><A name="8-8">sqrt</A> (number)</H3>
+<P>The sqrt() returns the square root of a number. Number is made positive, if
+necessary.</P>
+<PRE>Examples:
+   x = x1 - x2;     /* compute the classical distance formula */
+   y = y1 - y2;     /* between two points (x1,y1) (x2,y2) */
+   distance = sqrt((x*x) - (y*y));</PRE>
+
+<H3><A name="8-9">sin</A> (degree)<BR>cos (degree)<BR>tan (degree)<BR>
+atan (ratio)</H3>
+<P>These functions provide trigonometric values. sin(), cos(), and tan(), take a
+degree argument, 0-359, and returns the trigonometric value times 100,000. The
+scaling is necessary since the CROBOT cpu is an integer only machine, and trig
+values are between 0.0 and 1.0. atan() takes a ratio argument that has been
+scaled up by 100,000, and returns a degree value, between -90 and +90. The
+resulting calculation should not be scaled to the actual value until the final
+operation, as not to lose accuracy. See <A href="#9-2">programming
+examples for usage.</A></P>
+
+
+<H2><A name="9">9.</A> CROBOTS C Program Structure</H2>
+
+<H3><A name="9-1">9-1.</A> Basic program structure</H3>
+<P>CROBOTS programs are not unlike other C programs. The minimum CROBOTS program
+consist of a function named "main". Additionally, other functions can be
+defined, along with external variables.</P>
+
+<H3><A name="9-2">9-2.</A> Sample robots</H3>
+<P>Four CROBOTS are provided as examples:</P>
+<P><A href="RABBIT.R.html">rabbit.r</A> is a simple robot that merely runs around the
+field, randomly.</P>
+<P><A href="COUNTER.R.html">counter.r</A> uses a slow incremental scan to locate
+enemies. Moves when hit.</P>
+<P><A href="ROOK.R.html">rook.r</A> restricts its scanning to the four compass
+points. Results in a very fast scan.</P>
+<P><A href="SNIPER.R.html">sniper.r</A> is the most complex and devastating of the
+sample robots. It sits in a corner so that it only has to scan 90 degrees.<BR>
+Sniper's distance() and plot_course() routines are quite handy. Save them for
+your programs. Also, note that the main scan routine will "back up" a few
+degrees after a target has been found and fired upon. This should catch robots
+trying to flee away from the direction you are scanning. If the target moves the
+other way, the normal scan increment will find it.</P>
+
+
+<H2><A name="10">10.</A> CROBOTS CPU Architecture and Theory</H2>
+
+<P>This information is provided if you need to use the debug facility, or are
+curious about the virtual machine interpreter. Don't bother reading this section
+if you not so inclined; it is not needed for normal play.</P>
+
+<H3><A name="10-1">10-1.</A> Stack usage:</H3>
+<P>That stack is controlled implicitly by several pointers. Stack pointers are
+not accessible through machine instructions. Most instructions will either push
+data onto the stack, or pop data off the stack. The stack is used from the
+bottom up (low memory) for data and temporary storage, and is used from the top
+down (high memory) for saving stack pointers and the program counter on function
+call/return.</P>
+<P>External (global) variables are allocated at the very bottom of the stack,
+and the local mark pointer for 'main' starts just after the externals. External
+variables are addressed from the beginning of the stack, by offset.</P>
+<P>When a function is called (including 'main'), the stack pointer is marked
+(local mark) and is increased by the number of local variables needed for that
+function. Local variables are addressed relative to the local mark, by offsets.
+All calculations, function calls, and constants are pushed on and popped off the
+stack as needed (temporary mark or top of stack).</P>
+<P>A function call also saves its current stack pointers (local variable mark
+and frame mark) and program counter. This return information grows from the top
+down.</P>
+<P>Arguments are passed to functions by value. The first argument in a function
+call becomes the first local variable for the called function. Consider the
+following:</P>
+<PRE>main() {               /* main has three local variables: */
+  int a, b, c;
+  ....;
+  sub1 (a,b/2,c+1);    /* call sub1, and pass arguments */
+  ....;
+}
+
+sub1 (x,y,z)           /* sub1 takes three parameters and */
+int x, y, z; {         /* has one local variable */
+  int result;
+  result = x + y + z;
+  return (result);
+}</PRE>
+<P>The main() function allocates three local variables on the stack, sets its
+local mark at 'a', and sets the temporary stack pointer beyond the locals. Just
+before sub1() is called, the value of 'a' is pushed, followed by the result of
+'b/2', and 'c+1'. When sub1() is called, it sets its local mark where the value
+of 'a' is, so that 'a' is know as 'x' in func1(), likewise 'b/2' is known as 'y'
+and 'c+1' is known as 'z'. Sub1() also allocates one more word for 'result', and
+sets the temporary mark after the storage for 'result'.</P>
+<P>The following diagram illustrates the stack usage:</P>
+<PRE>&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;   &larr; end of stack, high memory
+&#x2502;main return &#x2502;   &larr; return info for main
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;       (frame,ip,local mark)
+&#x2502;sub1 return &#x2502;   &larr; return info for sub1
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;       (etc.)
+&#x2502;     &darr;      &#x2502;
+&#x2502;            &#x2502;   &larr; additional function call return
+&#x2502;            &#x2502;       info grow downwards
+&#x2502;            &#x2502;
+&#x2502;            &#x2502;
+&#x2502;            &#x2502;   &larr; additional function calls and
+&#x2502;     &uarr;      &#x2502;       expressions grow upwards
+&#x2502;expressions &#x2502;
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;   &larr; temporary mark (top of stack)
+&#x2502;sub1 locals &#x2502;
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;   &larr; local mark: sub1 function
+&#x2502;main locals &#x2502;
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;   &larr; local mark: main function
+&#x2502;            &#x2502;
+&#x2502; Externals  &#x2502;
+&#x2502;            &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;   &larr; beginning of stack</PRE>
+
+<H3><A name="10-2">10-2.</A> Link list</H3>
+<P>The link list is a list built by the compiler that contains the names and
+link information of the functions within the program. The link information
+contains the starting location of the function within the code, the number of
+parameters, and the number of other local variables within the function. The
+link list cannot be accessed by the user program.</P>
+
+<H3><A name="10-3">10-3.</A> Instruction set</H3>
+<P>The CROBOTS cpu has 10 instructions. Each instruction occupies the same
+amount of storage, with or without operands.</P>
+<P><B>FETCH</B> offset (external | local) - Fetch will retrieve a word from
+either the external variable pool or the local variable pool and push it onto
+the stack. The offset has its high-bit set (or'ed with 0x8000) if it is an
+external (offset from the beginning of the stack), otherwise it is a local
+(offset from the local variable mark). See STORE.</P>
+<P><B>STORE</B> offset (external | local), opcode - Store pops the top two
+items, applies the arithmetic opcode to the two operands, pushes the result on
+the top of the stack and stores it in the variable referenced by the offset.
+Offsets are either external or local, according to the method described in
+Fetch. The result of the opcode is left on the stack. See FETCH and BINOP.</P>
+<P><B>CONST</B> k - Const will push a constant onto the stack.</P>
+<P><B>BINOP</B> opcode - Binop will pop the top two items as top of stack = y,
+next to top of stack as x, apply the arithmetic opcode as (x opcode y), and push
+the result on the stack. Opcodes are decimal representations of 'C' operators
+such as '+', '/', '&gt;=', etc. See STORE.</P>
+<P><B>FCALL</B> link-offset - Fcall performs a high level function call
+facility. The link-offset operand specifies an entry in the link list table.
+Fcall pushes its return information: the next instruction counter and the
+current local variable mark. A new local variable mark and temporary mark (top
+of stack pointer) is set. The cpu then branches to the first instruction of the
+function. See RETSUB and FRAME.</P>
+<P><B>RETSUB</B> - Retsub returns from a function, leaving the return value on
+the top of the stack. Retsub restores the previous local variable pool, the next
+instruction counter, and re-adjusts the stack frame to the point just before the
+call. The C compiler generates code to return a dummy value if the function does
+not explicitly return one. See FCALL and FRAME.</P>
+<P><B>BRANCH</B> instruction - Branch pops the top of the stack and branches to
+the instruction if the value is zero. The next sequential instruction is
+executed if the value is anything other than zero.</P>
+<P><B>CHOP</B> - Chop discards the top of the stack by popping it into oblivion.
+</P>
+<P><B>FRAME</B> - Frame facilitates fcall/retsub by saving the current top of
+stack pointer (temporary mark) in anticipation of a fcall statement. The top of
+stack pointer is saved in the call/return stack as a frame marker. See FCALL and
+RETSUB.</P>
+<P><B>NOP</B> - No operation. Is used as a mark indicating the end of code.</P>
+
+<H3><A name="10-4">10-4.</A> Machine level debugging</H3>
+<P>Debug mode is used to trace by single stepping machine instructions. Use this
+only if you need to see your program execute, or are just curious.</P>
+<P>First, get a listing on paper of a compile with full information by using the
+<code>-c</code> option:</P>
+<PRE>A&gt;crobots -c yourpgm.r &gt;prn:</PRE>
+<P>Next, start CROBOTS again with the <code>-d</code> flag:</P>
+<PRE>A&gt;crobots -d yourprm.r</PRE>
+<P>Your robot will be placed randomly in the field, and a target robot will be
+placed at the center of the field (x=500,y=500) so your robot program can find
+and shoot at a target.</P>
+<P>The virtual machine interpreter will single step through your program
+(machine instructions, that is). At every instruction, an machine instruction is
+disassembled, and the top of stack pointer and value are printed. The top of
+stack and value are after the results of the instruction. Other information may
+also be printed, such as function calls searching the link list, etc.</P>
+<P>On every step, you are prompted "d,h,q,&lt;CR&gt;:". Entering 'd' will dump
+external and local variable pools, as well as vital information of your robot:
+coordinates, heading, speed, damage, etc., and the status of any missiles your
+robot may have fired. Entering 'h' will simulate your robot taking a 10% damage
+hit, so you can check damage detection, etc. Entering 'q' will quit the program
+immediately, and return you to DOS. A carriage return alone will continue the
+stepping process. All responses ('d', 'h', or 'q') should be in lower case only.
+You should refer to the compile listing for offsets into the external and local
+variable pools, C code, etc.</P>
+
+
+<H2><A name="11">11.</A> Implementation notes</H2>
+<P>CROBOTS is written entirely in 'C'. The compiler section was developed with
+the aid of the Unix* (TM) programs 'yacc' and 'lex'. Yacc (yet another
+compiler-compiler) accepts a 'grammar', which describes the CROBOTS 'C'
+language. Yacc produces a 'C' function known as a parser. The parser is the
+heart of the compiler, recognizing valid 'C' constructs. Lex (lexical analyzer)
+accepts a list of token combinations, and produces a 'C' function to scan the
+compiler input for the tokens. The yacc generated parser, yyparse(), repeatedly
+calls the lex generated analyzer, yylex(), to process the source program. The
+initial screen display routines were developed with the 'curses' screen library.
+</P>
+<P>The 'C' source code was then ported to MS-DOS** (TM), and recompiled using
+the Lattice*** (TM) 2.15E compiler, using the 'small' memory model. The screen
+display functions were modified to use 'int86()', accessing the rom INT 10H
+cursor positioning functions in the IBM-PC bios.</P>
+<P>* Unix is a trademark of Bell Telephone Laboratories.<BR>
+** MS-DOS is a trademark of Microsoft, Inc.<BR>
+*** Lattice is a trademark of Lattice, Inc.<BR>
+**** IBM is a trademark of International Business Machines, Inc.</P>
+
+
+
+<P>HTML version last modified: 21 October, 2013<BR>
+Formatted for HTML by: <A href="https://neil.fraser.name/">Neil Fraser</A></P>
+</BODY>
+</HTML>
