@@ -23,6 +23,14 @@
 			<control type="button" class="input" binding="down-arrow">v</control>
 		</control>
 	</keyboard>
-	<fdc ref="/crobots/pcjs/crobots-pcjs-disks.xml"/>
+	<fdc id="fdcNEC" pos="left" width="320px" automount='{A:{name:"FreeDOS + CROBOTS",path:"crobots-freedos.json"}}'>
+		<control type="list" class="input" binding="listDrives"/>
+		<control type="list" class="input" binding="listDisks">
+			<disk path="">None</disk>
+			<disk path="crobots-freedos.json">CROBOTS</disk>
+		</control>
+		<control type="button" class="input" binding="loadDrive">Load Drive</control>
+		<control type="description" class="output" binding="descDisk" padleft="8px"/>
+	</fdc>
 	<chipset id="chipset" model="5160" sw1="01000011"/>
 </machine>
