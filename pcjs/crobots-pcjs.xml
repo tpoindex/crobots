@@ -1,0 +1,28 @@
+<machine id="ibm5160" class="pcjs" border="1" pos="center" width="740px" style="background-color:white">
+    <name>PCjs: IBM PC XT (Model 5160), MDA, 256K, 1 Floppy, CROBOTS</name>
+	<computer id="xt-mda-256k" name="IBM PC XT" resume="1"/>
+	<ram id="ramLow" addr="0x00000"/>
+	<rom id="romBASIC" addr="0xf6000" size="0x8000" file="ibm-basic-1.10.json"/>
+	<rom id="romBIOS"  addr="0xfe000" size="0x2000" file="1982-11-08.json"/>
+	<video id="videoMDA" screenwidth="720" screenheight="350" scale="true" charset="ibm-mda-cga.json" pos="center" width="720px" padbottom="8px">
+	    <name>Monochrome Display</name>
+	</video>
+	<cpu id="cpu8088" model="8088" autostart="true" pos="left">
+		<control type="button" class="output" binding="speed" padLeft="16px" padRight="16px">0</control>
+		<control type="button" class="input" binding="setSpeed">Faster</control>
+		<control type="button" class="input" binding="run">Run</control>
+		<control type="button" class="input" binding="reset">Reset</control>
+	</cpu>
+	<keyboard id="keyboard" pos="left">
+		<control type="container" width="100%">
+			<control type="button" class="input" binding="esc">ESC</control>
+			<control type="button" class="input" binding="ctrl-c">CTRL-C</control>
+			<control type="button" class="input" binding="left-arrow">&lt;</control>
+			<control type="button" class="input" binding="right-arrow">&gt;</control>
+			<control type="button" class="input" binding="up-arrow">^</control>
+			<control type="button" class="input" binding="down-arrow">v</control>
+		</control>
+	</keyboard>
+	<fdc ref="crobots-pcjs-disks.xml"/>
+	<chipset id="chipset" model="5160" sw1="01000011"/>
+</machine>

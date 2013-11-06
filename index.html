@@ -37,12 +37,39 @@ released under GPLv2.   </p>
 <p>I probably will <strong>not</strong> be updating CROBOTS, so feel free to <a href="https://github.com/tpoindex/crobots">fork the code</a>.</p>
 
 <h2>
+<a name="original-readme" class="anchor" href="#original-readme"><span class="octicon octicon-link"></span></a>Original Readme</h2>
+
+<p>CROBOTS ("see-robots") is a game based on computer programming.
+Unlike arcade type games which require human inputs controlling
+some object, all strategy in CROBOTS must be complete before the
+actual game begins.  Game strategy is condensed into a C language
+program that you design and write.  Your program controls a robot
+whose mission is to seek out, track, and destroy other robots,
+each running different programs.  Each robot is equally equipped,
+and up to four robots may compete at once.  CROBOTS is best
+played among several people, each refining their own robot
+program, then matching program against program.</p>
+
+<p>CROBOTS consists of a C compiler, a virtual computer, and
+battlefield display (text graphics only, monochrome or color).
+The CROBOTS compiler accepts a limited (but useful) subset of
+the C language.  The C robot programs are aided by hardware
+functions to scan for opponents, start and stop drive mechanisms,
+fire cannons, etc.  After the programs are compiled and loaded
+into separate robots, the battle is observed.  Robots moving,
+missiles flying and exploding, and certain status information are
+displayed on the screen, in real-time.</p>
+
+<p>CROBOTS is distributed under terms of the GNU General Public
+License, version 2.</p>
+
+<h2>
 <a name="running-in-your-browser-with-pcjs" class="anchor" href="#running-in-your-browser-with-pcjs"><span class="octicon octicon-link"></span></a>Running in your browser with PCjs</h2>
 
 <p>Thanks to Jeff Parsons and his fantastic <a href="http://jsmachines.net">PCjs simulator</a>, you
 can run CROBOTS in your browser.  This requires a fairly modern machine to achieve the
 speed of the IBM PC at 4.77 MHz.  The virtual diskette boots <a href="http://freedos.org">FreeDOS</a>
-and runs the four demo robots.</p>
+and runs CROBOTS with the four demo robots.</p>
 
 <ul>
 <li>Start <a href="pcjs/crobots-pcjs.html">CROBOTS PCjs</a>
