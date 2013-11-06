@@ -23,6 +23,6 @@
 			<control type="button" class="input" binding="down-arrow">v</control>
 		</control>
 	</keyboard>
-	<fdc ref="crobots-pcjs-disks.xml"/>
+	<fdc ref="/crobots/pcjs/crobots-pcjs-disks.xml"/>
 	<chipset id="chipset" model="5160" sw1="01000011"/>
 </machine>
