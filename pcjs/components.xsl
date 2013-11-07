@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- author="Jeff Parsons (@jeffpar)" website="http://jsmachines.net" created="2012-05-05" modified="2013-01-29" license="http://www.gnu.org/licenses/gpl.html" -->
+<!-- author="Jeff Parsons (@jeffpar)" website="http://jsmachines.net/" created="2012-05-05" modified="2013-01-29" license="http://www.gnu.org/licenses/gpl.html" -->
 <!DOCTYPE xsl:stylesheet [
 	<!-- XSLT understands these entities only: lt, gt, apos, quot, and amp.  Other required entities may be defined below (see http://jsmachines.net/styles/common/entities.dtd). --> 
 ]>
@@ -8,7 +8,7 @@
 	<xsl:param name="generator" select="'client'"/>
 
 	<xsl:variable name="APPNAME">pcjs</xsl:variable>
-	<xsl:variable name="APPVER">1.09</xsl:variable>
+	<xsl:variable name="APPVER">1.10</xsl:variable>
 	<xsl:variable name="SITENAME">jsmachines</xsl:variable>
 	<xsl:variable name="SITEDOMAIN">jsmachines.net</xsl:variable>
 
@@ -414,13 +414,7 @@
 		<xsl:apply-templates select="document($componentFile)/cpu"><xsl:with-param name="machine" select="$machine"></xsl:with-param></xsl:apply-templates>
 	</xsl:template>
 	
-	<xsl:template match="x86[@ref]">
-		<xsl:param name="machine"></xsl:param>
-		<xsl:variable name="componentFile"><xsl:value-of select="$rootDir"/><xsl:value-of select="@ref"/></xsl:variable>
-		<xsl:apply-templates select="document($componentFile)/x86"><xsl:with-param name="machine" select="$machine"></xsl:with-param></xsl:apply-templates>
-	</xsl:template>
-	
-	<xsl:template match="cpu[not(@ref)] | x86[not(@ref)]">
+	<xsl:template match="cpu[not(@ref)]">
 		<xsl:param name="machine"></xsl:param>
 		<xsl:variable name="model">
 			<xsl:choose>
@@ -446,10 +440,28 @@
 				<xsl:otherwise>null</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="csStart">
+			<xsl:choose>
+				<xsl:when test="@csstart"><xsl:value-of select="@csstart"/></xsl:when>
+				<xsl:otherwise>-1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="csInterval">
+			<xsl:choose>
+				<xsl:when test="@csinterval"><xsl:value-of select="@csinterval"/></xsl:when>
+				<xsl:otherwise>-1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="csStop">
+			<xsl:choose>
+				<xsl:when test="@csstop"><xsl:value-of select="@csstop"/></xsl:when>
+				<xsl:otherwise>-1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:call-template name="component">
 			<xsl:with-param name="machine" select="$machine"/>
 			<xsl:with-param name="class" select="'cpu'"/>
-			<xsl:with-param name="parms">,model:<xsl:value-of select="$model"/>,clock:<xsl:value-of select="$clock"/>,multiplier:<xsl:value-of select="$multiplier"/>,autoStart:<xsl:value-of select="$autoStart"/></xsl:with-param>
+			<xsl:with-param name="parms">,model:<xsl:value-of select="$model"/>,clock:<xsl:value-of select="$clock"/>,multiplier:<xsl:value-of select="$multiplier"/>,autoStart:<xsl:value-of select="$autoStart"/>,autoStart:<xsl:value-of select="$autoStart"/>,csStart:<xsl:value-of select="$csStart"/>,csInterval:<xsl:value-of select="$csInterval"/>,csStop:<xsl:value-of select="$csStop"/></xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
