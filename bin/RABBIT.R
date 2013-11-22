@@ -9,8 +9,8 @@ main()
   while(1) {
     go(rand(1000),rand(1000));  /* go somewhere in the field */
   }
-    
-}  /* end of main */ 
+
+}  /* end of main */
 
 
 
@@ -72,18 +72,17 @@ int xx, yy;
   } else {
     if (yy < cury) {
       if (xx > curx)
-	    d = 360 + atan((scale * y) / x);
+        d = 360 + atan((scale * y) / x);
       else
-	    d = 180 + atan((scale * y) / x);
+        d = 180 + atan((scale * y) / x);
     } else {
       if (xx > curx)
-	    d = atan((scale * y) / x);
+        d = atan((scale * y) / x);
       else
-	    d = 180 + atan((scale * y) / x);
+        d = 180 + atan((scale * y) / x);
     }
   }
   return (d);
 }
-    
+
 /* end of rabbit.r */
-
