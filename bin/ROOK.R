@@ -11,12 +11,12 @@ main()
 
   /* move to center of board */
   if (loc_y() < 500) {
-    drive(90,70);				/* start moving */
-    while (loc_y() - 500 < 20 && speed() > 0)	/* stop near center */
+    drive(90,70);                              /* start moving */
+    while (loc_y() - 500 < 20 && speed() > 0)  /* stop near center */
       ;
   } else {
-    drive(270,70);				/* start moving */
-    while (loc_y() - 500 > 20 && speed() > 0)	/* stop near center */
+    drive(270,70);                             /* start moving */
+    while (loc_y() - 500 > 20 && speed() > 0)  /* stop near center */
       ;
   }
   drive(y,0);
@@ -39,15 +39,15 @@ main()
 
     /* if near end of battlefield, change directions */
     if (course == 0) {
-      if (loc_x() > boundary || speed() == 0) 
-	change();
+      if (loc_x() > boundary || speed() == 0)
+        change();
     }
     else {
-      if (loc_x() < boundary || speed() == 0) 
-	change();
+      if (loc_x() < boundary || speed() == 0)
+        change();
     }
   }
-    
+
 }
 
 /* look somewhere, and fire cannon repeatedly at in-range target */
@@ -80,5 +80,3 @@ change() {
 
 
 /* end of rook.r */
-
-
